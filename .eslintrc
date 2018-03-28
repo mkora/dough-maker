@@ -1,0 +1,8 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "consistent-return": 0,
+    "no-shadow": 0,
+    "no-console": 0
+  }
+}

@@ -1,0 +1,38 @@
+pids
+logs
+results
+tmp
+
+# dependencies
+/node_modules
+bower_components
+
+# API keys and secrets
+.env
+
+# testing
+/coverage
+.nyc_output
+
+# production
+build
+
+# misc
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.idea
+*.iml
+.vscode
+chrome-user-data
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
