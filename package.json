@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./server.js",
-    "devstart": "nodemon ./server.js",
+    "dev": "nodemon ./server.js",
+    "gen-data": "node ./",
     "lint": "node_modules/eslint/bin/eslint.js .",
     "test": "mocha --timeout 10000"
   },
