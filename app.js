@@ -12,13 +12,13 @@ const logger = require('./utils/logger');
  * where API keys and passwords are configured
  */
 dotenv.load({
-  path: '.env.example',
+  path: '.env',
 });
 
 /**
  * Controllers (route handlers)
  */
-const indexController = require('./controllers/index');
+const apiController = require('./controllers/api');
 
 /**
  * Create Express server
@@ -67,9 +67,19 @@ app.get('/pulse', (req, res) => {
 });
 
 /**
- * API examples routes
+ * API routes
  */
-app.get('/api/index', indexController.index);
+// 1. Get a sum that was spend/earn on a specified month
+app.get('/api/data-groupby', apiController.dataGroupBy);
+
+// 2. Get a list of all transactions that were made on a specified month
+app.get('/api/data-details', apiController.dataDetails);
+
+// 3. Get a table of all sums by categories and/or years and/or months
+app.get('/api/data-tableby', apiController.dataTableBy);
+
+// 4. Get a full list of categories
+app.get('/api/categories', apiController.categories);
 
 /**
  * Error Handler
@@ -79,7 +89,6 @@ app.use((req, res, next) => {
   err.status = 404;
   next(err);
 });
-
 
 app.use(errorHandler({
   log: (err, str, req, res) => {
