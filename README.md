@@ -1,39 +1,21 @@
-# Sourcerer's Boilerplate
+# Dough Maker
 
 Node.js, Express, Mongo
 
 ## Overview
 
-A boilerplate for Node.js / Express backend applications
+Fake data API for Dough Tracker
 
 ## Notes
 
-- Provides `mongodb` support
+- Create .env file to configure db (see an example in .env.example)
 
-- Uses `morgan` as a HTTP request logger and `winston` as a logger for everything else
-
-- Loads environment variables from `.env` file
-
-- Uses `error-handler`
-
-- Controllers should be added to `controllers` folder
-
-- Linter config extends airbnb's
-
-- Added `chai-http` to test api calls
+- Api Endpoints is described [here](https://github.com/mkora/dough-tracker#api-endpoints)
 
 ## Quick Start
 
-1. Make new one:
-
+1. Install dependencies
   ```
-  # Clone
-  git clone git@github.com:mkora/sourcerer-boilerplate.git
-  cd sourcerer-boilerplate
-
-  rm -rf .git && git init && npm init
-  
-  # Install dependencies
   npm i
   ```
 
@@ -48,21 +30,19 @@ A boilerplate for Node.js / Express backend applications
   - Dev server (uses nodemon):
 
   ```
-  PORT=3030 LOG_LEVEL=debug npm run devstart
+  PORT=3030 LOG_LEVEL=debug npm run dev
   ```
 
   - Browse at http://localhost:3030
 
-3. Run tests
+3. Run a mock data generator:
+
+  ```
+  npm run gen-data
+  ```
+
+4. Run tests
 
   ```
   npm test
   ```
-
-## API Endpoints
-
-  Note: Use GET method to retrieve data
-  
-  - Call /pulse to see 'It works!'
-  
-    For example, `/pulse`
