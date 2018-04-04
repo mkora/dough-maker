@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const errorHandler = require('errorhandler');
 const morgan = require('morgan');
+const connect = require('./utils/connect2DB');
 const logger = require('./utils/logger');
 
 /**
@@ -45,13 +45,7 @@ if (process.env.NODE_ENV === 'production') {
 /**
  * Connect to MongoDB.
  */
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-mongoose.connection.on('error', (err) => {
-  logger.error('MongoDB connection error. Please make sure MongoDB is running');
-  logger.debug(err);
-  process.exit();
-});
+connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
 
 /**
  * Test app

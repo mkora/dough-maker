@@ -1,23 +1,10 @@
 const dotenv = require('dotenv');
 const logger = require('./utils/logger');
 const program = require('commander');
-const mongoose = require('mongoose');
 const fs = require('fs');
 const util = require('util');
 const mock = require('./utils/mockData');
-
-/**
- * Connect to MongoDB
- */
-const connect2DB = (uri) => {
-  mongoose.Promise = global.Promise;
-  mongoose.connect(uri);
-  mongoose.connection.on('error', (err) => {
-    logger.error('MongoDB connection error. Please make sure MongoDB is running');
-    logger.debug(err);
-    process.exit();
-  });
-};
+const connect = require('./utils/connect2DB');
 
 /**
  * Promisify writing files
@@ -61,7 +48,7 @@ mock()
      * Output the data
      */
     if (program.save) {
-      connect2DB(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+      connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
 
       // TODO save to db in here
       // before adding clear collection
