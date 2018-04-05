@@ -3,6 +3,14 @@ const logger = require('../utils/logger');
 // 1. /api/data-groupby?m=1&y=2017&cg=rent
 exports.dataGroupBy = (req, res) => {
   logger.info('Call data-groupby function');
+
+  const errorData = {
+    success: false,
+    msg: 'Something went wrong! Check out logs',
+  };
+  logger.error('Error occured', errorData);
+  // return res.json(errorData);
+
   const data = {
     success: true,
     data: {
@@ -26,6 +34,7 @@ exports.dataGroupBy = (req, res) => {
 // 2. /api/data-details?m=1&y=2017
 exports.dataDetails = (req, res) => {
   logger.info('Call data-detail function');
+
   const data = {
     success: true,
     data: {
