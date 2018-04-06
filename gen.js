@@ -15,46 +15,41 @@ dotenv.load({
   path: '.env',
 });
 
-const cmdOutput = (filename) => {
-  mock()
-    .then((data) => {
-      if (typeof filename !== 'string') {
-        throw new Error('Filename wasn\'t specified');
-      }
-
-      // TODO Flatten array
-
-      writeFile(filename, data);
-    })
-    .catch((err) => {
-      logger.error('An error occured. Check out logs');
-      logger.debug(err);
-      process.exit();
-    });
+/**
+ * Save mock data to dump MongoDB file
+ */
+const cmdOutput = async (filename) => {
+  try {
+    const data = await mock();
+    if (typeof filename !== 'string') {
+      throw new Error('Filename wasn\'t specified');
+    }
+    const strs = data.map(d => JSON.stringify(d)).join('\n');
+    writeFile(filename, strs, 'utf-8');
+  } catch (err) {
+    logger.error('An error occured. Check out logs');
+    logger.debug(err);
+  }
 };
 
 /**
  * Save mock data to db
  */
-const cmdSave = () => {
+const cmdSave = async () => {
   connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-  mock()
-    .then((data) => {
-      logger.info('Mock data was generated', data);
-      return Item.truncate()
-        .then(() => {
-          logger.info('Collection was emptied');
-          return Promise.all(data.map(d => Item.create(d)));
-        });
-    })
-    .then((res) => {
-      logger.info('Mock data was saved, %d items', res.length);
-    })
-    .catch((err) => {
-      logger.error('An error occured. Check out logs');
-      logger.debug(err);
-      process.exit();
-    });
+  try {
+    const data = await mock();
+    logger.info('Mock data was generated', data);
+
+    await Item.truncate();
+    logger.info('Collection was emptied');
+
+    const items = await Promise.all(data.map(d => Item.create(d)));
+    logger.info('Mock data was saved, %d items', items.length);
+  } catch (err) {
+    logger.error('An error occured. Check out logs');
+    logger.debug(err);
+  }
 };
 
 /**
