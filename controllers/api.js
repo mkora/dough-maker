@@ -1,16 +1,9 @@
 const logger = require('../utils/logger');
+const Item = require('../models/Item');
 
 // 1. /api/data-groupby?m=1&y=2017&cg=rent
-exports.dataGroupBy = (req, res) => {
+exports.dataGroupBy = (req, res, next) => {
   logger.info('Call data-groupby function');
-
-  const errorData = {
-    success: false,
-    msg: 'Something went wrong! Check out logs',
-  };
-  logger.error('Error occured', errorData);
-  // return res.json(errorData);
-
   const data = {
     success: true,
     data: {
@@ -32,33 +25,28 @@ exports.dataGroupBy = (req, res) => {
 };
 
 // 2. /api/data-details?m=1&y=2017
-exports.dataDetails = (req, res) => {
+exports.dataDetails = async (req, res, next) => {
   logger.info('Call data-detail function');
-
-  const data = {
-    success: true,
-    data: {
-      month: 1,
-      year: 2017,
-      result: [
-        {
-          month: 1,
-          year: 2017,
-          date: 1485216000,
-          type: -1,
-          category: 'groceries',
-          title: 'Groceries title #1',
-          sum: 79,
-        },
-      ],
-    },
-  };
-  logger.debug('Returned data', data);
-  return res.json(data);
+  try {
+    const month = req.query.m;
+    const year = req.query.y;
+    const data = {
+      success: true,
+      data: {
+        month,
+        year,
+        result: await Item.find({ month, year }),
+      },
+    };
+    logger.debug('Returned data', data);
+    return res.json(data);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 // 3. /api/data-tableby?y=2017
-exports.dataTableBy = (req, res) => {
+exports.dataTableBy = (req, res, next) => {
   logger.info('Call data-tableby function');
   const data = {
     success: true,
