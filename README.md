@@ -10,7 +10,9 @@ Fake data API for Dough Tracker
 
 - Create .env file to configure db (see an example in .env.example)
 
-- Api Endpoints is described [here](https://github.com/mkora/dough-tracker#api-endpoints)
+- API Endpoints is described [here](https://github.com/mkora/dough-tracker#api-endpoints)
+
+- Add `Accept: application/json` request header
 
 ## Quick Start
 
@@ -37,9 +39,34 @@ Fake data API for Dough Tracker
 
 3. Run a mock data generator:
 
+  If it's not a cli tool yet:
+
   ```
-  npm run gen-data
+  LOG_LEVEL=debug node gen save
+  LOG_LEVEL=debug node gen output ./dump.json
   ```
+
+  Make it real CLI tool:
+
+  - Add a shebang `#!/usr/bin/env node`
+
+  - Update `package.json`
+    ```
+      "bin" : {
+        "broadcast" : "./broadcast.js"
+      }
+  ```
+
+  - make it global
+    ```
+    npm install -g
+    ```
+
+  After any changes in ./gen.js don't forget to run
+  ```
+  npm link
+  ```
+
 
 4. Run tests
 
