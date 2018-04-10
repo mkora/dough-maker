@@ -2,26 +2,34 @@ const logger = require('../utils/logger');
 const Item = require('../models/Item');
 
 // 1. /api/data-groupby?m=1&y=2017&cg=rent
-exports.dataGroupBy = (req, res, next) => {
+exports.dataGroupBy = async (req, res, next) => {
   logger.info('Call data-groupby function');
-  const data = {
-    success: true,
-    data: {
-      month: 1,
-      year: 2017,
-      category: 'rent',
-      result: [
-        {
-          month: 1,
-          year: 2017,
-          category: 'rent',
-          sum: -1200,
-        },
-      ],
-    },
-  };
-  logger.debug('Returned data', data);
-  return res.json(data);
+  try {
+    const month = req.query.m;
+    const year = req.query.y;
+    const category = req.query.cg;
+
+    const query = {
+      month,
+      year,
+    };
+    // TODO category if it in query
+
+    const data = {
+      success: true,
+      data: {
+        ...query,
+        result: await Item.aggregate([
+          { $match: query },
+          { $group: { _id: null, sum: { $sum: { $multiply: ['$sum', '$type'] } } } },
+        ]),
+      },
+    };
+    logger.debug('Returned data', data);
+    return res.json(data);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 // 2. /api/data-details?m=1&y=2017
