@@ -2,8 +2,10 @@ const logger = require('../utils/logger');
 const Item = require('../models/Item');
 const Category = require('../models/Category');
 
+const minYear = 2000;
+
 const validateYear = (year) => {
-  if (year > 2000
+  if (year > minYear
     && year <= (new Date()).getFullYear()) {
     return parseInt(year, 10);
   }
@@ -93,32 +95,63 @@ exports.dataDetails = async (req, res, next) => {
 };
 
 // 3. /api/data-tableby?y=2017
-exports.dataTableBy = (req, res, next) => {
+exports.dataTableBy = async (req, res, next) => {
   logger.info('Call data-tableby function');
-  const data = {
-    success: true,
-    data: {
-      year: 2017,
-      result: [
-        {
-          _id: {
-            category: 'income',
-            month: 9,
+  try {
+    let query = {};
+    let group = {
+      category: '$category',
+    };
+    if (req.query.y !== undefined) {
+      const year = validateYear(req.query.y);
+      query = {
+        ...query,
+        year,
+      };
+      group = {
+        ...group,
+        month: '$month',
+      };
+      if (req.query.m !== undefined) {
+        const month = validateMonth(req.query.m);
+        query = {
+          ...query,
+          month,
+        };
+      }
+    } else {
+      query = {
+        ...query,
+        year: { $gte: minYear },
+      };
+      group = {
+        ...group,
+        year: '$year',
+      };
+    }
+
+    const data = {
+      success: true,
+      data: {
+        ...query,
+        result: await Item.aggregate([
+          {
+            $match: query,
           },
-          sum: 2534,
-        },
-        {
-          _id: {
-            category: 'unexpected',
-            month: 9,
+          {
+            $group: {
+              _id: group,
+              sum: { $sum: { $multiply: ['$sum', '$type'] } },
+            },
           },
-          sum: 0,
-        },
-      ],
-    },
-  };
-  logger.debug('Returned data', data);
-  return res.json(data);
+        ]),
+      },
+    };
+    logger.debug('Returned data', data);
+    return res.json(data);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 // 4. /api/categories
