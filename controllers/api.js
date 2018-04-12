@@ -1,27 +1,66 @@
 const logger = require('../utils/logger');
 const Item = require('../models/Item');
+const Category = require('../models/Category');
+
+const validateYear = (year) => {
+  if (year > 2000
+    && year <= (new Date()).getFullYear()) {
+    return parseInt(year, 10);
+  }
+  throw new Error('Invalid year');
+};
+
+const validateMonth = (month) => {
+  if (month > 0 && month <= 13) {
+    return parseInt(month, 10);
+  }
+  throw new Error('Invalid month');
+};
+
+const validateCategory = async (label) => {
+  if (label === undefined) {
+    return label;
+  }
+  const categories = await Category.find();
+  if (categories[label] !== undefined) {
+    return label;
+  }
+  throw new Error('Invalid category');
+};
 
 // 1. /api/data-groupby?m=1&y=2017&cg=rent
 exports.dataGroupBy = async (req, res, next) => {
   logger.info('Call data-groupby function');
   try {
-    const month = req.query.m;
-    const year = req.query.y;
-    const category = req.query.cg;
+    const month = validateMonth(req.query.m);
+    const year = validateYear(req.query.y);
+    const category = await validateCategory(req.query.cg);
 
-    const query = {
+    let query = {
       month,
       year,
     };
-    // TODO category if it in query
+    if (category !== undefined) {
+      query = {
+        ...query,
+        category,
+      };
+    }
 
     const data = {
       success: true,
       data: {
         ...query,
         result: await Item.aggregate([
-          { $match: query },
-          { $group: { _id: null, sum: { $sum: { $multiply: ['$sum', '$type'] } } } },
+          {
+            $match: query,
+          },
+          {
+            $group: {
+              _id: null,
+              sum: { $sum: { $multiply: ['$sum', '$type'] } },
+            },
+          },
         ]),
       },
     };
@@ -36,8 +75,8 @@ exports.dataGroupBy = async (req, res, next) => {
 exports.dataDetails = async (req, res, next) => {
   logger.info('Call data-detail function');
   try {
-    const month = req.query.m;
-    const year = req.query.y;
+    const month = validateMonth(req.query.m);
+    const year = validateYear(req.query.y);
     const data = {
       success: true,
       data: {
@@ -83,18 +122,11 @@ exports.dataTableBy = (req, res, next) => {
 };
 
 // 4. /api/categories
-exports.categories = (req, res) => {
+exports.categories = async (req, res) => {
   logger.info('Call categories function');
   const data = {
     success: true,
-    data: {
-      rent: 'Rent',
-      utilities: 'Utilities',
-      groceries: 'Groceries',
-      stuff: 'Shopping',
-      unexpected: 'Unexpected',
-      income: 'Income',
-    },
+    data: await Category.find(),
   };
   logger.debug('Returned data', data);
   return res.json(data);
