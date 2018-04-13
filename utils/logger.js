@@ -11,7 +11,7 @@ const {
 } = format;
 
 const logger = createLogger({
-  level: process.env.LOG_LEVEL || 'error',
+  level: process.env.LOG_LEVEL || 'info',
   format: combine(
     splat(),
     prettyPrint(),

@@ -20,12 +20,16 @@ dotenv.load({
  */
 const cmdOutput = async (filename) => {
   try {
-    const data = await mock();
     if (typeof filename !== 'string') {
       throw new Error('Filename wasn\'t specified');
     }
+
+    const data = await mock();
+    logger.debug('Mock data was generated', data);
+
     const strs = data.map(d => JSON.stringify(d)).join('\n');
-    writeFile(filename, strs, 'utf-8');
+    await writeFile(filename, strs, 'utf-8');
+    logger.info('Done!');
   } catch (err) {
     logger.error('An error occured. Check out logs');
     logger.debug(err);
@@ -39,13 +43,14 @@ const cmdSave = async () => {
   connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
   try {
     const data = await mock();
-    logger.info('Mock data was generated', data);
+    logger.debug('Mock data was generated', data);
 
     await Item.truncate();
     logger.info('Collection was emptied');
 
     const items = await Promise.all(data.map(d => Item.create(d)));
     logger.info('Mock data was saved, %d items', items.length);
+    logger.info('Done!');
   } catch (err) {
     logger.error('An error occured. Check out logs');
     logger.debug(err);
