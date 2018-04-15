@@ -9,6 +9,9 @@
     "lint": "node_modules/eslint/bin/eslint.js .",
     "test": "mocha --timeout 10000"
   },
+  "bin" : {
+    "dough-maker" : "./gen.js"
+  },  
   "author": "mkora",
   "license": "MIT",
   "dependencies": {
