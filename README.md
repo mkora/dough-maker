@@ -16,60 +16,87 @@ Fake data API for Dough Tracker
 
 ## Quick Start
 
-1. Install dependencies
-  ```
-  npm i
-  ```
+1. Run the server
 
-2. Run the server
+  - Install dependencies
+
+    ```
+    npm i
+    ```
 
   - Boot from the top-level directory
 
-  ```
-  PORT=3030 LOG_LEVEL=debug npm start
-  ```
+    ```
+    PORT=3030 npm start
+    ```
 
   - Dev server (uses nodemon):
 
-  ```
-  PORT=3030 LOG_LEVEL=debug npm run dev
-  ```
+    ```
+    PORT=3030 LOG_LEVEL=debug npm run dev
+    ```
 
   - Browse at http://localhost:3030
 
-3. Run a mock data generator:
+2. Run a mock data generator:
 
-  If it's not a cli tool yet:
+  - Install dependencies
+
+    ```
+    npm install -g
+    ```
+   
+   - Run a CLI tool
+
+    ```
+    # save to mock data to db
+    dough-maker save
+
+    # output mock data to a file
+    dough-maker gen output ./dump.json
+    ```
+
+  - Run if `gen.js` was updated
+
+    ```
+    npm link
+    ```
+
+4. Run tests
+
+    ```
+    npm test
+    ```
+
+## Dev Notes
+
+- Run a script (if it's not a cli tool yet):
 
   ```
   LOG_LEVEL=debug node gen save
   LOG_LEVEL=debug node gen output ./dump.json
   ```
 
-  Make it real CLI tool:
+- Make it a real CLI tool:
 
-  - Add a shebang `#!/usr/bin/env node`
+  1. Add a shebang `#!/usr/bin/env node`
 
-  - Update `package.json`
-    ```
+  2. Update `package.json`
+
+  ```
       "bin" : {
-        "broadcast" : "./broadcast.js"
+        "dough-maker" : "./gen.js"
       }
   ```
 
-  - make it global
+  3. Make it global
+
     ```
     npm install -g
     ```
 
-  After any changes in ./gen.js don't forget to run
-  ```
-  npm link
-  ```
+  4. IMPORTANT: After any changes in ./gen.js don't forget to run
 
-
-4. Run tests
-
-  ```
-  npm test
-  ```
+    ```
+    npm link
+    ```
