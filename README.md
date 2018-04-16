@@ -68,7 +68,7 @@ Fake data API for Dough Tracker
     npm test
     ```
 
-## Dev Notes
+## Dev Notes (mock data generator)
 
 - Run a script (if it's not a cli tool yet):
 
@@ -79,23 +79,23 @@ Fake data API for Dough Tracker
 
 - Make it a real CLI tool:
 
-  1. Add a shebang `#!/usr/bin/env node`
+  - Add a shebang `#!/usr/bin/env node`
 
-  2. Update `package.json`
+  - Update `package.json`
 
-  ```
+    ```
       "bin" : {
         "dough-maker" : "./gen.js"
       }
-  ```
+    ```
 
-  3. Make it global
+  - Make it global
 
     ```
     npm install -g
     ```
 
-  4. IMPORTANT: After any changes in ./gen.js don't forget to run
+  - IMPORTANT: After any changes in ./gen.js don't forget to run
 
     ```
     npm link
