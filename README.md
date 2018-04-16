@@ -18,51 +18,51 @@ Fake data API for Dough Tracker
 
 1. Run the server
 
-  - Install dependencies
+    - Install dependencies
 
-    ```
-    npm i
-    ```
+      ```
+      npm i
+      ```
 
-  - Boot from the top-level directory
+    - Boot from the top-level directory
 
-    ```
-    PORT=3030 npm start
-    ```
+      ```
+      PORT=3030 npm start
+      ```
 
-  - Dev server (uses nodemon):
+    - Dev server (uses nodemon):
 
-    ```
-    PORT=3030 LOG_LEVEL=debug npm run dev
-    ```
+      ```
+      PORT=3030 LOG_LEVEL=debug npm run dev
+      ```
 
-  - Browse at http://localhost:3030
+    - Browse at http://localhost:3030
 
 2. Run a mock data generator:
 
-  - Install dependencies
+    - Install dependencies
 
-    ```
-    npm install -g
-    ```
-   
-   - Run a CLI tool
+      ```
+      npm install -g
+      ```
+    
+    - Run a CLI tool
 
-    ```
-    # save to mock data to db
-    dough-maker save
+        ```
+        # save to mock data to db
+        dough-maker save
 
-    # output mock data to a file
-    dough-maker gen output ./dump.json
-    ```
+        # output mock data to a file
+        dough-maker gen output ./dump.json
+        ```
 
-  - Run if `gen.js` was updated
+    - Run if `gen.js` was updated
 
-    ```
-    npm link
-    ```
+      ```
+      npm link
+      ```
 
-4. Run tests
+3. Run tests
 
     ```
     npm test
@@ -72,10 +72,10 @@ Fake data API for Dough Tracker
 
 - Run a script (if it's not a cli tool yet):
 
-  ```
-  LOG_LEVEL=debug node gen save
-  LOG_LEVEL=debug node gen output ./dump.json
-  ```
+    ```
+    LOG_LEVEL=debug node gen save
+    LOG_LEVEL=debug node gen output ./dump.json
+    ```
 
 - Make it a real CLI tool:
 
