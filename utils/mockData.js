@@ -71,7 +71,7 @@ module.exports = async () => {
             category,
             title: `${ucFirst(category)} title # ${(i + 1)}`,
             sum: (category === 'unexpected')
-              ? randInt(0, 1) * randInt(nums.min, nums.max)
+              ? Math.round(Math.random()) * randInt(nums.min, nums.max)
               : randInt(nums.min, nums.max),
           });
         }
