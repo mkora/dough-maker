@@ -4,15 +4,13 @@ Node.js, Express, Mongo
 
 ## Overview
 
-Fake data API for Dough Tracker
+Fake data API for [Dough Tracker](https://github.com/mkora/dough-tracker)
 
 ## Notes
 
 - Create .env file to configure db (see an example in .env.example)
 
-- API Endpoints is described [here](https://github.com/mkora/dough-tracker#api-endpoints)
-
-- Add `Accept: application/json` request header
+- API Endpoints are described [here](https://github.com/mkora/dough-tracker#api-endpoints)
 
 ## Quick Start
 
@@ -69,6 +67,8 @@ Fake data API for Dough Tracker
     ```
 
 ## Dev Notes (mock data generator)
+
+- IMPORTANT: don't forget to add `Accept: application/json`
 
 - Run a script (if it's not a cli tool yet):
 
