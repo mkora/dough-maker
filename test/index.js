@@ -23,7 +23,6 @@ describe('Testing Dough Tracker API', () => {
       chai.request(server)
         .get('/')
         .end((err, res) => {
-          expect(err).not.to.be.null;
           expect(res).to.have.status(404);
           done();
         });
